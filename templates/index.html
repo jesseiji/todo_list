@@ -44,9 +44,9 @@
 											<p style="color: {{ 'red' if task.overdue else 'default' }}">{{ task.content }} {% if task.overdue %}(OVERDUE){% endif %}</p>
 										{% endif %}
 										<div class="flex">
-										{% if task.due_date is none and form is none %}
+										{% if task.display_due_date is none and form is none %}
 											<a href="{{ url_for('add_date', list_id=list.id, todo_id=task.id, index_type=index_type) }}"><button class="date-btn">No Due Date</button></a>
-										{% elif form is not none and task.id == todo_id%}
+										{% elif form is not none and task.id == todo_id %}
 											<form method="post">
 												<div class="flex">
 													{{ form.date(class="date-form-date") }}
