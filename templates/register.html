@@ -1,0 +1,42 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% include 'header.html' %}
+
+		<!-- Home -->
+		<article id="top" class="wrapper style4">
+			<div class="container medium">
+				<div class="flex" style="justify-content: space-between;">
+					{% if register_type == 0 %}
+						<p>Create Your Account</p>
+					{% elif register_type == 1 %}
+						<div><p>Login to Your Account</p><div style="margin-top: -2em !important;"><p style="font-size: 1.2em;"><a href="{{ url_for('forgot_password', n=0) }}">Forgot Password</a></p></div></div>
+					{% else %}
+						<div><p>Reset Your Password</p>
+						{% if n == 1 %}
+							<div style="margin-top: -2em !important;"><p style="font-size: 1.2em;">Enter the code that was sent to your email</p></div>
+						{% endif %}
+						</div>
+					{% endif %}
+				</div>
+				<div>
+					<div class="row col-12">
+						<div class="col-12 col-12-small">
+							{% with messages = get_flashed_messages() %}
+							  {% if messages %}
+								  {% for message in messages %}
+									<p class="flash">{{ message }}</p>
+								  {% endfor %}
+							  {% endif %}
+							{% endwith %}
+							{{ render_form(form) }}
+						</div>
+					</div>
+						{% if register_type == 0 %}
+							<p>Already have an account? <a href="{{ url_for('login', save_list_id=save_list_id) }}">Log In!</a></p>
+						{% elif register_type == 1 %}
+							<p>Don't have an account? <a href="{{ url_for('register', save_list_id=save_list_id) }}">Sign Up!</a></p>
+						{% endif %}
+				</div>
+			</div>
+		</article>
+
+{% include 'footer.html' %}

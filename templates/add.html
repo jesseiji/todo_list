@@ -1,0 +1,29 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% include 'header.html' %}
+
+  <!-- Home -->
+		<article id="top" class="wrapper style4">
+			<div class="container medium">
+				<div>
+					<p>Create a New List</p>
+				</div>
+				<div>
+					<form method="post" action="">
+						<div class="row col-12">
+							<div class="col-12 col-12-small">
+								{% with messages = get_flashed_messages() %}
+								  {% if messages %}
+									  {% for message in messages %}
+										<p class="flash">{{ message }}</p>
+									  {% endfor %}
+								  {% endif %}
+								{% endwith %}
+								{{ render_form(form) }}
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</article>
+
+{% include 'footer.html' %}

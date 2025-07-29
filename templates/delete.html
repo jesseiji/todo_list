@@ -1,0 +1,18 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% include 'header.html' %}
+
+    <!-- Home -->
+		<article id="top" class="wrapper style4">
+			<div class="container medium">
+				<div class="flex" style="justify-content: space-between;">
+                    <p>Delete List ({{ list.title }})</p>
+				</div>
+                <div class="row col-12">
+                    <div class="delete-form col-12 col-12-small">
+                        {{ render_form(form) }}
+                    </div>
+                </div>
+            </div>
+		</article>
+
+{% include 'footer.html' %}

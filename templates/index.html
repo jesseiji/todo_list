@@ -1,0 +1,70 @@
+{% include 'header.html' %}
+
+		<!-- Home -->
+		<article id="top" class="wrapper style4">
+			<div class="container medium">
+				<div class="flex" style="justify-content: space-between;">
+					{% if index_type == 0 %}
+						<p>Create a New List</p>
+						<a href="{{ url_for('add', list_id=list.id) }}"><button>
+							Save List
+						</button></a>
+					{% else %}
+						<p>{{ list.title }}</p>
+						<a href="{{ url_for('delete', x='list', _id=list.id) }}"><button>
+							Delete List
+						</button></a>
+					{% endif %}
+				</div>
+				<div>
+					<form method="post" action="{{ url_for('home') }}">
+						<div class="row col-12">
+							<div class="col-12 col-12-small">
+								{% with messages = get_flashed_messages() %}
+								  {% if messages %}
+									  {% for message in messages %}
+										<p class="flash">{{ message }}</p>
+									  {% endfor %}
+								  {% endif %}
+							  	{% endwith %}
+								<input required type="text" name="content" placeholder="Create a to-do">
+							</div>
+						</div>
+					</form>
+					<section class="tasks">
+						{% for task in list.todos[::-1]|sort(attribute='done') %}
+							<form method="post" action="{{ url_for('home') if index_type == 0 else url_for('display_list', _id=list.id) }}">
+								<div class="flex">
+									<input type="hidden" name="toggle" value="{{ task.id }}">
+									<input type="checkbox" name="done" onchange="this.form.submit()" {% if task.done %}checked{% endif %}>
+									<div class="flex" style="width: 100%; justify-content: space-between;">
+										{% if task.done %}
+											<p class="done">{{ task.content }}</p>
+										{% else %}
+											<p style="color: {{ 'red' if task.overdue else 'default' }}">{{ task.content }} {% if task.overdue %}(OVERDUE){% endif %}</p>
+										{% endif %}
+										<div class="flex">
+										{% if task.due_date is none and form is none %}
+											<a href="{{ url_for('add_date', list_id=list.id, todo_id=task.id, index_type=index_type) }}"><button class="date-btn">No Due Date</button></a>
+										{% elif form is not none and task.id == todo_id%}
+											<form method="post">
+												<div class="flex">
+													{{ form.date(class="date-form-date") }}
+													<button type="submit" class="check-btn">✔</button>
+												</div>
+											</form>
+										{% else %}
+											<a href="{{ url_for('add_date', list_id=list.id, todo_id=task.id, index_type=index_type) }}"><button class="date-btn">Due {{ task.display_due_date }}</button></a>
+										{% endif %}
+											<a href="{{ url_for('delete', x='todo', _id=task.id) }}"><button class="x-btn">&times;</button></a>
+										</div>
+									</div>
+								</div>
+							</form>
+						{% endfor %}
+					</section>
+				</div>
+			</div>
+		</article>
+
+{% include 'footer.html' %}
